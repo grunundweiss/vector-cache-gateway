@@ -1,0 +1,32 @@
+# Environments and packages
+.venv/
+venv/
+env/
+
+# Python runtime data
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local Vector Databases & Serialized Models
+*.faiss
+*.index
+*.pkl
+.chroma/
+hf_models/
+.cache/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Editor swap/backup files
+*.kate-swp
+.*.kate-swp
+*.swp
+*~
+
+# Build artifacts
+*.egg-info/
+build/
+dist/

@@ -1,0 +1,105 @@
+{
+  "model": "all-mpnet-base-v2",
+  "n_paraphrases": 25,
+  "n_near_misses": 25,
+  "paraphrase_similarity": {
+    "mean": 0.8092122077941895,
+    "min": 0.35709357261657715,
+    "max": 0.9305235147476196
+  },
+  "near_miss_similarity": {
+    "mean": 0.7743797898292542,
+    "min": 0.6290885210037231,
+    "max": 0.9792125225067139
+  },
+  "near_misses_above_weakest_paraphrase": 25,
+  "worst_offenders": [
+    {
+      "score": 0.9792125225067139,
+      "a": "Do transfers over 500,000 NOK need multi-factor authentication?",
+      "b": "Do transfers over 50,000 NOK need multi-factor authentication?"
+    },
+    {
+      "score": 0.951974630355835,
+      "a": "What is the maximum retention period for marketing data?",
+      "b": "What is the minimum retention period for marketing data?"
+    },
+    {
+      "score": 0.9342760443687439,
+      "a": "Is MFA required for internal transfers?",
+      "b": "Is MFA required for external transfers?"
+    },
+    {
+      "score": 0.9266542196273804,
+      "a": "How often must we run an internal audit?",
+      "b": "How often must we run an external audit?"
+    },
+    {
+      "score": 0.8908350467681885,
+      "a": "What are the requirements for onboarding a retail customer?",
+      "b": "What are the requirements for onboarding a corporate customer?"
+    }
+  ],
+  "rows": [
+    {
+      "threshold": 0.5,
+      "hit_rate": 0.96,
+      "false_hit_rate": 1.0,
+      "margin": -0.040000000000000036
+    },
+    {
+      "threshold": 0.55,
+      "hit_rate": 0.96,
+      "false_hit_rate": 1.0,
+      "margin": -0.040000000000000036
+    },
+    {
+      "threshold": 0.6,
+      "hit_rate": 0.92,
+      "false_hit_rate": 1.0,
+      "margin": -0.07999999999999996
+    },
+    {
+      "threshold": 0.65,
+      "hit_rate": 0.84,
+      "false_hit_rate": 0.92,
+      "margin": -0.08000000000000007
+    },
+    {
+      "threshold": 0.7,
+      "hit_rate": 0.84,
+      "false_hit_rate": 0.64,
+      "margin": 0.19999999999999996
+    },
+    {
+      "threshold": 0.75,
+      "hit_rate": 0.72,
+      "false_hit_rate": 0.52,
+      "margin": 0.19999999999999996
+    },
+    {
+      "threshold": 0.8,
+      "hit_rate": 0.72,
+      "false_hit_rate": 0.36,
+      "margin": 0.36
+    },
+    {
+      "threshold": 0.85,
+      "hit_rate": 0.6,
+      "false_hit_rate": 0.2,
+      "margin": 0.39999999999999997
+    },
+    {
+      "threshold": 0.9,
+      "hit_rate": 0.16,
+      "false_hit_rate": 0.16,
+      "margin": 0.0
+    },
+    {
+      "threshold": 0.95,
+      "hit_rate": 0.0,
+      "false_hit_rate": 0.08,
+      "margin": -0.08
+    }
+  ]
+}

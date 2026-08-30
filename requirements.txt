@@ -1,0 +1,6 @@
+# Dependencies are declared in pyproject.toml; this file just forwards to it
+# so `pip install -r requirements.txt` keeps working.
+#
+# For development (tests, ruff, mypy) and benchmarks:
+#   pip install -e ".[dev,bench]"
+-e .
