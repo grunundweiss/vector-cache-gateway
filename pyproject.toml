@@ -4,17 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vector-cache-gateway"
-version = "0.2.0"
-description = "A semantic cache in front of a local vector store, with a measured similarity threshold."
+version = "0.3.0"
+description = "A semantic cache in front of a local vector store, with a measured similarity threshold and a guard against the hits it cannot measure away."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
+
+# numpy only. The cache takes anything with an `encode(text) -> ndarray`, so the
+# encoder is an extra rather than a dependency -- which also keeps the test
+# suite installable without torch, since it substitutes a fake encoder anyway.
 dependencies = [
     "numpy>=1.26,<3.0",
-    "sentence-transformers>=2.7,<3.0",
 ]
 
 [project.optional-dependencies]
+encoder = [
+    "sentence-transformers>=2.7,<3.0",
+]
 dev = [
     "pytest>=8.0,<9.0",
     "ruff>=0.6",
@@ -22,6 +28,17 @@ dev = [
 ]
 bench = [
     "matplotlib>=3.8",
+]
+# Approximate nearest neighbour backends, for caches past the size where a full
+# scan is cheap. See benchmarks/bench_ann.py for what they cost in recall.
+ann = [
+    "hnswlib>=0.8",
+    "faiss-cpu>=1.8",
+]
+# Only for examples/fastapi_proxy.py.
+serve = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
 ]
 
 [tool.setuptools]

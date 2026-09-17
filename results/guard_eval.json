@@ -1,0 +1,353 @@
+{
+  "n_paraphrases": 25,
+  "n_near_misses": 25,
+  "near_miss_catch_rate": 0.88,
+  "paraphrase_veto_rate": 0.0,
+  "worst_offenders": [
+    {
+      "score": 0.9792125225067139,
+      "a": "Do transfers over 500,000 NOK need multi-factor authentication?",
+      "b": "Do transfers over 50,000 NOK need multi-factor authentication?",
+      "vetoed": true,
+      "reason": "numeric: numeric literals differ: [500000.0] vs [50000.0]"
+    },
+    {
+      "score": 0.951974630355835,
+      "a": "What is the maximum retention period for marketing data?",
+      "b": "What is the minimum retention period for marketing data?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['maximum'] vs ['minimum']"
+    },
+    {
+      "score": 0.9342760443687439,
+      "a": "Is MFA required for internal transfers?",
+      "b": "Is MFA required for external transfers?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['internal'] vs ['external']"
+    },
+    {
+      "score": 0.9266542196273804,
+      "a": "How often must we run an internal audit?",
+      "b": "How often must we run an external audit?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['internal'] vs ['external']"
+    },
+    {
+      "score": 0.8908350467681885,
+      "a": "What are the requirements for onboarding a retail customer?",
+      "b": "What are the requirements for onboarding a corporate customer?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['retail'] vs ['corporate']"
+    }
+  ],
+  "timing": {
+    "p50_us": 14.563003787770867,
+    "p95_us": 17.251993995159864,
+    "mean_us": 14.759984491684008,
+    "checks": 10000
+  },
+  "near_misses": [
+    {
+      "a": "What is the retention limit for KYC records?",
+      "b": "What is the retention limit for AML records?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['kyc'] vs ['aml']"
+    },
+    {
+      "a": "How long must KYC records be kept?",
+      "b": "How long must tax records be kept?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['kyc'] vs ['tax']"
+    },
+    {
+      "a": "Do transfers over 500,000 NOK need multi-factor authentication?",
+      "b": "Do transfers over 50,000 NOK need multi-factor authentication?",
+      "vetoed": true,
+      "reason": "numeric: numeric literals differ: [500000.0] vs [50000.0]"
+    },
+    {
+      "a": "Where must customer data be stored?",
+      "b": "Where must employee data be stored?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['customer'] vs ['employee']"
+    },
+    {
+      "a": "How quickly must we report a data breach?",
+      "b": "How quickly must we report a suspicious transaction?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['breach'] vs ['suspiciou transaction']"
+    },
+    {
+      "a": "What is the retention period for customer records?",
+      "b": "What is the deletion deadline for customer records?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['retention'] vs ['deletion']"
+    },
+    {
+      "a": "Who is allowed to approve a high-value transaction?",
+      "b": "Who is allowed to reverse a high-value transaction?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['approve'] vs ['reverse']"
+    },
+    {
+      "a": "Is MFA required for internal transfers?",
+      "b": "Is MFA required for external transfers?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['internal'] vs ['external']"
+    },
+    {
+      "a": "What are the requirements for onboarding a retail customer?",
+      "b": "What are the requirements for onboarding a corporate customer?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['retail'] vs ['corporate']"
+    },
+    {
+      "a": "How often must we run an internal audit?",
+      "b": "How often must we run an external audit?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['internal'] vs ['external']"
+    },
+    {
+      "a": "Can customer data be transferred outside the EEA?",
+      "b": "Can customer data be transferred outside the United States?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['eea'] vs ['united state']"
+    },
+    {
+      "a": "What is the threshold for reporting a cash transaction?",
+      "b": "What is the threshold for reporting a wire transaction?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['cash'] vs ['wire']"
+    },
+    {
+      "a": "What encryption is required for data at rest?",
+      "b": "What encryption is required for data in transit?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['at rest'] vs ['in transit']"
+    },
+    {
+      "a": "What triggers enhanced due diligence?",
+      "b": "What triggers simplified due diligence?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['enhanced'] vs ['simplified']"
+    },
+    {
+      "a": "How long is a suspicious activity report retained?",
+      "b": "How long is an internal audit report retained?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Must staff complete compliance training every year?",
+      "b": "Must staff complete security training every year?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['compliance'] vs ['security']"
+    },
+    {
+      "a": "What are the penalties for late regulatory filing?",
+      "b": "What are the penalties for inaccurate regulatory filing?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['late'] vs ['inaccurate']"
+    },
+    {
+      "a": "Who must approve changes to the risk model?",
+      "b": "Who must approve changes to the pricing model?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['risk'] vs ['pricing']"
+    },
+    {
+      "a": "Is a written record of the risk assessment required?",
+      "b": "Is a written record of the board decision required?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Can an account be opened before verification completes?",
+      "b": "Can an account be closed before verification completes?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['open'] vs ['close']"
+    },
+    {
+      "a": "What is the maximum retention period for marketing data?",
+      "b": "What is the minimum retention period for marketing data?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['maximum'] vs ['minimum']"
+    },
+    {
+      "a": "Does the policy apply to contractors?",
+      "b": "Does the policy apply to subsidiaries?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['contractor'] vs ['subsidiary']"
+    },
+    {
+      "a": "When must a customer file be re-reviewed?",
+      "b": "When must a customer file be archived?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What records must be kept for cross-border payments?",
+      "b": "What records must be kept for domestic payments?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['international'] vs ['domestic']"
+    },
+    {
+      "a": "How is a politically exposed person identified?",
+      "b": "How is a sanctioned person identified?",
+      "vetoed": true,
+      "reason": "polarity: mutually exclusive terms: ['pep'] vs ['sanction']"
+    }
+  ],
+  "paraphrases": [
+    {
+      "a": "How long must KYC records be kept?",
+      "b": "What is the retention period for KYC records?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Do transfers over 500,000 NOK need multi-factor authentication?",
+      "b": "Is MFA required for transfers above 500,000 NOK?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Where must customer data be stored?",
+      "b": "What are the data residency requirements for customer data?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "How often must we run an internal audit?",
+      "b": "What is the required frequency of internal audits?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "How quickly must we report a data breach?",
+      "b": "What is the deadline for notifying authorities of a data breach?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Who is allowed to approve a high-value transaction?",
+      "b": "Which roles can sign off on a high-value transaction?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What happens if a customer refuses identity verification?",
+      "b": "What is the procedure when a customer declines to verify their identity?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Can we use a third-party provider for identity checks?",
+      "b": "Is outsourcing identity verification to a vendor permitted?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What records must be kept for cross-border payments?",
+      "b": "Which documentation is required for international payment transactions?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "How long is a suspicious activity report retained?",
+      "b": "What is the storage duration for a filed suspicious activity report?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Must staff complete compliance training every year?",
+      "b": "Is annual compliance training mandatory for employees?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What is the threshold for reporting a cash transaction?",
+      "b": "Above what amount must a cash transaction be reported?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Can customer data be transferred outside the EEA?",
+      "b": "Is it permitted to send customer data to a country outside the EEA?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What are the penalties for late regulatory filing?",
+      "b": "What fines apply if a regulatory filing is submitted after the deadline?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Who must approve changes to the risk model?",
+      "b": "Which body signs off on modifications to the risk model?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "How is a politically exposed person identified?",
+      "b": "What is the process for determining whether a customer is a PEP?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What encryption is required for data at rest?",
+      "b": "Which encryption standard must be applied to stored data?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "How long do we keep transaction logs?",
+      "b": "What is the retention window for transaction logs?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "When must a customer file be re-reviewed?",
+      "b": "At what point does a customer file require periodic re-review?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Is a written record of the risk assessment required?",
+      "b": "Must the risk assessment be documented in writing?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What triggers enhanced due diligence?",
+      "b": "Under what circumstances is enhanced due diligence required?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Can an account be opened before verification completes?",
+      "b": "Is it allowed to open an account while verification is still pending?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Who owns the incident response process?",
+      "b": "Which team is responsible for incident response?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "What is the maximum retention period for marketing data?",
+      "b": "How long may marketing data be retained at most?",
+      "vetoed": false,
+      "reason": ""
+    },
+    {
+      "a": "Does the policy apply to contractors?",
+      "b": "Are contractors covered by this policy?",
+      "vetoed": false,
+      "reason": ""
+    }
+  ]
+}

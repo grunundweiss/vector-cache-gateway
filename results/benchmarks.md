@@ -1,8 +1,17 @@
 # Benchmark results
 
-Hardware: AMD Ryzen 7 5800X3D (8 cores), 7.9 GB RAM, CPU only — no GPU.
+Hardware: AMD Ryzen 7 5800X3D (8 cores), 7.9 GB RAM, ran on Virtual Machine.
 Encoder: `all-mpnet-base-v2`, 768 dimensions, float32.
 Reproduce with `python -m benchmarks.bench_cache`.
+
+**These numbers were measured before the verification guard and the pluggable
+index backends were added.** The lookup path now pulls k=5 candidates, rescores
+them exactly, and runs the lexical guard on the best one. That guard costs
+~6 us at p50 (`python -m benchmarks.guard_eval`), against the ~40 ms embedding
+pass in the table below -- 0.015% -- so the rows are not expected to move. They
+have not been re-measured on that hardware, which is why this note exists
+instead of a claim. [`ann.md`](ann.md) has fresh lookup numbers from a different
+machine.
 
 ## 1. A cache hit saves nothing without a generator
 
@@ -10,8 +19,6 @@ Reproduce with `python -m benchmarks.bench_cache`.
 |---|---|---|---|
 | Retrieval-only (default) | 47.9 ms | 40.0 ms | **~1×** |
 | With a 500 ms generation call | 60.0 ms | 539.6 ms | **9.0×** |
-
-This is the most important number here, and it is not flattering.
 
 With the default `RetrievalOnlyGenerator`, **a cache hit is not measurably faster
 than a miss**. Both paths must embed the query before anything else can happen,
@@ -25,7 +32,7 @@ generation call on the miss path it is a 9× improvement, and that gap widens as
 generation gets slower. **The saving comes from skipping generation, not from
 skipping retrieval.**
 
-The 500 ms figure is a fixed sleep, not a model — a clean statement of "what a
+The 500 ms figure is a fixed sleep, not a model that showed a clean statement of "what a
 hit saves when the miss path costs X", without hardware noise mixed in. Wire in
 a real engine via `InferenceEngineGenerator` for end-to-end numbers.
 
@@ -42,12 +49,17 @@ scored on every query. At 100k entries a lookup costs **58.9 ms**, which is more
 than the embedding pass it was supposed to be cheaper than. Past roughly 10k
 entries the cache becomes the thing you need to optimize.
 
-The fix is approximate nearest neighbour (FAISS IVF or HNSW) instead of a full
-scan, trading exactness for sublinear lookup. That is not implemented here; the
-`max_entries` bound (default 10k) keeps the cache inside the range where a full
-scan is still reasonable, which is a deliberate limit rather than a solution.
+The fix is approximate nearest neighbour instead of a full scan, trading
+exactness for sublinear lookup. That is now implemented -- `hnsw` and
+`faiss-ivf` backends in `gateway/index.py` -- and measured separately in
+[`ann.md`](ann.md), where HNSW is 16.6x faster than the scan at 100k entries at
+full recall on clustered vectors, and loses 93% of its recall on vectors with no
+cluster structure. The default is still the exact scan: at the 10k bound the
+difference between them is a fraction of a millisecond against a ~40 ms
+embedding pass, and exactness is worth more than 0.2 ms. Above that bound the
+argument reverses, which is where `build_index(..., "auto")` switches.
 
-Memory is 3,072 bytes per entry for the vectors — exactly 768 × 4, confirming
+Memory is 3,072 bytes per entry for the vectors, which is exactly 768 × 4, confirming
 float32 storage. Measured RSS runs ~17% above the raw buffer, which is the
 Python-side keys, answers and index dict.
 

@@ -1,0 +1,40 @@
+{
+  "model": "all-mpnet-base-v2",
+  "note": "Measured per intent cluster, with the lexical guard applied to the near-miss set first. Cluster sizes are small; see evidence.",
+  "thresholds": {
+    "numeric": 0.85,
+    "polarity": 0.85,
+    "entity": 0.7,
+    "general": 0.8
+  },
+  "evidence": {
+    "numeric": {
+      "paraphrase_pairs": 1,
+      "near_miss_pairs_after_guard": 0,
+      "near_miss_pairs_vetoed_by_guard": 1,
+      "margin": null,
+      "note": "too few pairs; kept the global threshold"
+    },
+    "polarity": {
+      "paraphrase_pairs": 7,
+      "near_miss_pairs_after_guard": 1,
+      "near_miss_pairs_vetoed_by_guard": 9,
+      "margin": 0.7142857142857143,
+      "note": ""
+    },
+    "entity": {
+      "paraphrase_pairs": 7,
+      "near_miss_pairs_after_guard": 1,
+      "near_miss_pairs_vetoed_by_guard": 6,
+      "margin": 1.0,
+      "note": ""
+    },
+    "general": {
+      "paraphrase_pairs": 10,
+      "near_miss_pairs_after_guard": 1,
+      "near_miss_pairs_vetoed_by_guard": 6,
+      "margin": 0.7,
+      "note": ""
+    }
+  }
+}

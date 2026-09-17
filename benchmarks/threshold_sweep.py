@@ -5,6 +5,8 @@ given threshold actually buy, and what does it cost?
 
     hit rate        fraction of PARAPHRASES served from cache (higher better)
     false-hit rate  fraction of NEAR_MISSES served from cache (lower better)
+    guarded         the same false-hit rate with the lexical guard in front of
+                    the cache (gateway/guard.py), which is what actually ships
 
 A false hit is not a cache miss with extra steps -- it returns a confidently
 wrong answer about a different regulation. That asymmetry is why the operating
@@ -20,34 +22,68 @@ import json
 from pathlib import Path
 
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 from benchmarks.pairs import NEAR_MISSES, PARAPHRASES
+from gateway.guard import default_guard
 
 DEFAULT_MODEL = "all-mpnet-base-v2"
 RESULTS_DIR = Path(__file__).resolve().parent.parent / "results"
 THRESHOLDS = np.round(np.arange(0.50, 0.96, 0.05), 2)
 
 
-def pair_similarities(model: SentenceTransformer, pairs: list[tuple[str, str]]) -> np.ndarray:
-    """Cosine similarity for each (a, b) pair, encoding every text once."""
+def pair_similarities(model, pairs: list[tuple[str, str]]) -> np.ndarray:
+    """Cosine similarity for each (a, b) pair, encoding every text once.
+
+    ``model`` is anything with sentence-transformers' ``encode``; it is imported
+    inside ``main`` so this module -- and the per-intent sweep that imports from
+    it -- stay importable without torch installed.
+    """
     texts = [text for pair in pairs for text in pair]
     vectors = model.encode(texts, convert_to_numpy=True, normalize_embeddings=True)
     left, right = vectors[0::2], vectors[1::2]
     return np.sum(left * right, axis=1)
 
 
-def sweep(paraphrase_scores: np.ndarray, near_miss_scores: np.ndarray) -> list[dict]:
+def guard_verdicts(pairs: list[tuple[str, str]], scores: np.ndarray) -> np.ndarray:
+    """True where the guard would let a pair through at its measured score."""
+    guard = default_guard()
+    return np.array(
+        [guard.approve(a, b, float(score)).ok for (a, b), score in zip(pairs, scores, strict=True)]
+    )
+
+
+def sweep(
+    paraphrase_scores: np.ndarray,
+    near_miss_scores: np.ndarray,
+    *,
+    paraphrase_approved: np.ndarray | None = None,
+    near_miss_approved: np.ndarray | None = None,
+) -> list[dict]:
+    """Hit and false-hit rates at each threshold, before and after the guard.
+
+    The guarded columns are the ones that describe the shipped system: a pair
+    counts as served only if it clears the threshold *and* survives the guard.
+    """
+    if paraphrase_approved is None:
+        paraphrase_approved = np.ones(len(paraphrase_scores), dtype=bool)
+    if near_miss_approved is None:
+        near_miss_approved = np.ones(len(near_miss_scores), dtype=bool)
+
     rows = []
     for threshold in THRESHOLDS:
         hit_rate = float(np.mean(paraphrase_scores >= threshold))
         false_hit_rate = float(np.mean(near_miss_scores >= threshold))
+        guarded_hit = float(np.mean((paraphrase_scores >= threshold) & paraphrase_approved))
+        guarded_false = float(np.mean((near_miss_scores >= threshold) & near_miss_approved))
         rows.append(
             {
                 "threshold": float(threshold),
                 "hit_rate": hit_rate,
                 "false_hit_rate": false_hit_rate,
                 "margin": hit_rate - false_hit_rate,
+                "guarded_hit_rate": guarded_hit,
+                "guarded_false_hit_rate": guarded_false,
+                "guarded_margin": guarded_hit - guarded_false,
             }
         )
     return rows
@@ -75,10 +111,18 @@ def write_chart(rows: list[dict], model_name: str, path: Path) -> bool:
     thresholds = [r["threshold"] for r in rows]
     hits = [r["hit_rate"] * 100 for r in rows]
     false_hits = [r["false_hit_rate"] * 100 for r in rows]
+    guarded_false_hits = [r["guarded_false_hit_rate"] * 100 for r in rows]
 
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.plot(thresholds, hits, marker="o", label="hit rate (paraphrases served)")
     ax.plot(thresholds, false_hits, marker="s", label="false-hit rate (near-misses served)")
+    ax.plot(
+        thresholds,
+        guarded_false_hits,
+        marker="^",
+        linestyle="--",
+        label="false-hit rate with the guard",
+    )
     ax.set_xlabel("similarity threshold")
     ax.set_ylabel("percent of pairs")
     ax.set_title(
@@ -98,6 +142,8 @@ def main() -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL)
     args = parser.parse_args()
 
+    from sentence_transformers import SentenceTransformer
+
     print(f"loading {args.model} ...")
     model = SentenceTransformer(args.model)
 
@@ -115,14 +161,31 @@ def main() -> None:
         f"max={near_miss_scores.max():.4f}"
     )
 
-    rows = sweep(paraphrase_scores, near_miss_scores)
+    paraphrase_approved = guard_verdicts(PARAPHRASES, paraphrase_scores)
+    near_miss_approved = guard_verdicts(NEAR_MISSES, near_miss_scores)
+    rows = sweep(
+        paraphrase_scores,
+        near_miss_scores,
+        paraphrase_approved=paraphrase_approved,
+        near_miss_approved=near_miss_approved,
+    )
 
-    print(f"\n{'threshold':>10} {'hit rate':>10} {'false hits':>12} {'margin':>9}")
+    print(
+        f"\n{'threshold':>10} {'hit rate':>10} {'false hits':>12} {'margin':>9}"
+        f" | {'hit rate':>10} {'false hits':>12} {'margin':>9}   (with guard)"
+    )
     for row in rows:
         print(
             f"{row['threshold']:>10.2f} {row['hit_rate']:>9.1%} "
             f"{row['false_hit_rate']:>12.1%} {row['margin']:>9.1%}"
+            f" | {row['guarded_hit_rate']:>9.1%} "
+            f"{row['guarded_false_hit_rate']:>12.1%} {row['guarded_margin']:>9.1%}"
         )
+
+    print(
+        f"\nguard vetoed {int((~near_miss_approved).sum())}/{len(NEAR_MISSES)} near-misses "
+        f"and {int((~paraphrase_approved).sum())}/{len(PARAPHRASES)} paraphrases"
+    )
 
     offenders = worst_offenders(NEAR_MISSES, near_miss_scores)
     print("\nnear-misses the encoder scores most similar:")
@@ -153,6 +216,26 @@ def main() -> None:
         },
         "near_misses_above_weakest_paraphrase": above_weakest,
         "worst_offenders": offenders,
+        "guard": {
+            "near_misses_vetoed": int((~near_miss_approved).sum()),
+            "paraphrases_vetoed": int((~paraphrase_approved).sum()),
+        },
+        # Every pair's score, so downstream tools -- benchmarks/guard_eval.py,
+        # benchmarks/intent_sweep.py -- can re-analyze without the encoder.
+        "pair_scores": {
+            "paraphrases": [
+                {"a": a, "b": b, "score": float(score), "guard_ok": bool(ok)}
+                for (a, b), score, ok in zip(
+                    PARAPHRASES, paraphrase_scores, paraphrase_approved, strict=True
+                )
+            ],
+            "near_misses": [
+                {"a": a, "b": b, "score": float(score), "guard_ok": bool(ok)}
+                for (a, b), score, ok in zip(
+                    NEAR_MISSES, near_miss_scores, near_miss_approved, strict=True
+                )
+            ],
+        },
         "rows": rows,
     }
     (RESULTS_DIR / "threshold_sweep.json").write_text(json.dumps(payload, indent=2) + "\n")

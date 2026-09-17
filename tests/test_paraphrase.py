@@ -44,11 +44,17 @@ NEAR_MISSES = [
 ]
 
 
-@pytest.fixture
-def gateway():
+def make_gateway(guard="default"):
     store = LocalVectorStore()
     store.ingest_document("doc-1", DOC)
-    return SemanticCacheGateway(vector_store=store, similarity_threshold=0.75)
+    return SemanticCacheGateway(
+        vector_store=store, similarity_threshold=0.75, guard=guard
+    )
+
+
+@pytest.fixture
+def gateway():
+    return make_gateway()
 
 
 @pytest.mark.parametrize("first,second", PARAPHRASES)
@@ -89,23 +95,29 @@ def test_near_miss_does_not_hit(gateway, first, second):
         ),
     ],
 )
-def test_single_token_topic_swaps_are_not_separable_lexically(gateway, first, second):
-    """Characterization test: a known limitation, not desired behaviour.
+def test_topic_swaps_clear_the_gate_and_are_stopped_by_the_guard(first, second):
+    """The similarity gate cannot separate these. The guard can.
 
     Swapping one topic token (KYC -> AML) leaves every other word identical, so
     a lexical measure scores it 0.86-0.88 -- at or above what genuine
-    paraphrases score. No threshold can separate these two classes here,
-    because the signal that distinguishes them is semantic, not lexical.
+    paraphrases score, and the real encoder agrees: the sweep measures 0.8608
+    for this pair. No threshold separates these two classes, because the signal
+    that distinguishes them is not a matter of degree.
 
-    This is precisely why the shipped threshold is chosen from a sweep against
-    the real encoder rather than picked by hand. If a future change makes the
-    fake separate these, this test should start failing and be deleted.
+    Both halves are asserted on purpose. The first is the limitation the
+    threshold sweep documents; the second is the guard that answers it. If the
+    first assertion ever fails, the fake encoder has changed and this test is
+    measuring something else.
     """
-    gateway.process_query(first)
-
-    _, status = gateway.process_query(second)
-
+    unguarded = make_gateway(guard=None)
+    unguarded.process_query(first)
+    _, status = unguarded.process_query(second)
     assert status.startswith("CACHE_HIT"), (
-        "expected the lexical fake to conflate these; if it no longer does, "
-        "the fake has improved and this characterization test is obsolete"
+        "expected the similarity gate alone to conflate these; if it no longer "
+        "does, the encoder has changed and this test is obsolete"
     )
+
+    guarded = make_gateway()
+    guarded.process_query(first)
+    _, status = guarded.process_query(second)
+    assert status == "CACHE_MISS", "the guard must veto a swapped topic token"

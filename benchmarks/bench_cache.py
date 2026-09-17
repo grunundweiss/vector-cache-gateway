@@ -109,7 +109,13 @@ def bench_lookup_scaling(sizes: list[int], probes: int = 200) -> list[dict]:
     rows = []
 
     for size in sizes:
-        cache = SemanticCache(threshold=2.0, max_entries=size)  # never hits; measures scan
+        # Pinned to the exact backend: this table is what a full scan costs, and
+        # is the evidence for the bound that `build_index(..., "auto")` uses to
+        # decide when to stop doing one. benchmarks/bench_ann.py measures the
+        # alternative.
+        cache = SemanticCache(
+            threshold=2.0, max_entries=size, index_backend="exact"
+        )  # never hits; measures scan
         vectors = rng.normal(size=(size, DIM)).astype(np.float32)
 
         gc.collect()
@@ -126,14 +132,14 @@ def bench_lookup_scaling(sizes: list[int], probes: int = 200) -> list[dict]:
             cache.lookup(probe)
             samples.append(time.perf_counter() - start)
 
-        buffer_mb = cache._buffer.nbytes / 1024**2
+        buffer_mb = cache.nbytes / 1024**2
         rows.append(
             {
                 "entries": size,
                 "lookup": percentiles(samples),
                 "vector_buffer_mb": buffer_mb,
                 "rss_delta_mb": after - before,
-                "bytes_per_entry": cache._buffer.nbytes / size,
+                "bytes_per_entry": cache.nbytes / size,
             }
         )
         print(

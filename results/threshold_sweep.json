@@ -40,66 +40,406 @@
       "b": "What are the requirements for onboarding a corporate customer?"
     }
   ],
+  "guard": {
+    "near_misses_vetoed": 22,
+    "paraphrases_vetoed": 0
+  },
+  "pair_scores": {
+    "paraphrases": [
+      {
+        "a": "How long must KYC records be kept?",
+        "b": "What is the retention period for KYC records?",
+        "score": 0.9082823991775513,
+        "guard_ok": true
+      },
+      {
+        "a": "Do transfers over 500,000 NOK need multi-factor authentication?",
+        "b": "Is MFA required for transfers above 500,000 NOK?",
+        "score": 0.6231448650360107,
+        "guard_ok": true
+      },
+      {
+        "a": "Where must customer data be stored?",
+        "b": "What are the data residency requirements for customer data?",
+        "score": 0.7444015145301819,
+        "guard_ok": true
+      },
+      {
+        "a": "How often must we run an internal audit?",
+        "b": "What is the required frequency of internal audits?",
+        "score": 0.9227944612503052,
+        "guard_ok": true
+      },
+      {
+        "a": "How quickly must we report a data breach?",
+        "b": "What is the deadline for notifying authorities of a data breach?",
+        "score": 0.8882309794425964,
+        "guard_ok": true
+      },
+      {
+        "a": "Who is allowed to approve a high-value transaction?",
+        "b": "Which roles can sign off on a high-value transaction?",
+        "score": 0.7231652140617371,
+        "guard_ok": true
+      },
+      {
+        "a": "What happens if a customer refuses identity verification?",
+        "b": "What is the procedure when a customer declines to verify their identity?",
+        "score": 0.8983664512634277,
+        "guard_ok": true
+      },
+      {
+        "a": "Can we use a third-party provider for identity checks?",
+        "b": "Is outsourcing identity verification to a vendor permitted?",
+        "score": 0.7380599975585938,
+        "guard_ok": true
+      },
+      {
+        "a": "What records must be kept for cross-border payments?",
+        "b": "Which documentation is required for international payment transactions?",
+        "score": 0.6367548108100891,
+        "guard_ok": true
+      },
+      {
+        "a": "How long is a suspicious activity report retained?",
+        "b": "What is the storage duration for a filed suspicious activity report?",
+        "score": 0.8925198912620544,
+        "guard_ok": true
+      },
+      {
+        "a": "Must staff complete compliance training every year?",
+        "b": "Is annual compliance training mandatory for employees?",
+        "score": 0.890860915184021,
+        "guard_ok": true
+      },
+      {
+        "a": "What is the threshold for reporting a cash transaction?",
+        "b": "Above what amount must a cash transaction be reported?",
+        "score": 0.8648032546043396,
+        "guard_ok": true
+      },
+      {
+        "a": "Can customer data be transferred outside the EEA?",
+        "b": "Is it permitted to send customer data to a country outside the EEA?",
+        "score": 0.8263410329818726,
+        "guard_ok": true
+      },
+      {
+        "a": "What are the penalties for late regulatory filing?",
+        "b": "What fines apply if a regulatory filing is submitted after the deadline?",
+        "score": 0.8687008023262024,
+        "guard_ok": true
+      },
+      {
+        "a": "Who must approve changes to the risk model?",
+        "b": "Which body signs off on modifications to the risk model?",
+        "score": 0.8145095109939575,
+        "guard_ok": true
+      },
+      {
+        "a": "How is a politically exposed person identified?",
+        "b": "What is the process for determining whether a customer is a PEP?",
+        "score": 0.35709357261657715,
+        "guard_ok": true
+      },
+      {
+        "a": "What encryption is required for data at rest?",
+        "b": "Which encryption standard must be applied to stored data?",
+        "score": 0.5964453220367432,
+        "guard_ok": true
+      },
+      {
+        "a": "How long do we keep transaction logs?",
+        "b": "What is the retention window for transaction logs?",
+        "score": 0.8582492470741272,
+        "guard_ok": true
+      },
+      {
+        "a": "When must a customer file be re-reviewed?",
+        "b": "At what point does a customer file require periodic re-review?",
+        "score": 0.9305235147476196,
+        "guard_ok": true
+      },
+      {
+        "a": "Is a written record of the risk assessment required?",
+        "b": "Must the risk assessment be documented in writing?",
+        "score": 0.9053037166595459,
+        "guard_ok": true
+      },
+      {
+        "a": "What triggers enhanced due diligence?",
+        "b": "Under what circumstances is enhanced due diligence required?",
+        "score": 0.8716854453086853,
+        "guard_ok": true
+      },
+      {
+        "a": "Can an account be opened before verification completes?",
+        "b": "Is it allowed to open an account while verification is still pending?",
+        "score": 0.8869611024856567,
+        "guard_ok": true
+      },
+      {
+        "a": "Who owns the incident response process?",
+        "b": "Which team is responsible for incident response?",
+        "score": 0.8242417573928833,
+        "guard_ok": true
+      },
+      {
+        "a": "What is the maximum retention period for marketing data?",
+        "b": "How long may marketing data be retained at most?",
+        "score": 0.8753196001052856,
+        "guard_ok": true
+      },
+      {
+        "a": "Does the policy apply to contractors?",
+        "b": "Are contractors covered by this policy?",
+        "score": 0.8835452795028687,
+        "guard_ok": true
+      }
+    ],
+    "near_misses": [
+      {
+        "a": "What is the retention limit for KYC records?",
+        "b": "What is the retention limit for AML records?",
+        "score": 0.7332171201705933,
+        "guard_ok": false
+      },
+      {
+        "a": "How long must KYC records be kept?",
+        "b": "How long must tax records be kept?",
+        "score": 0.6869282722473145,
+        "guard_ok": false
+      },
+      {
+        "a": "Do transfers over 500,000 NOK need multi-factor authentication?",
+        "b": "Do transfers over 50,000 NOK need multi-factor authentication?",
+        "score": 0.9792125225067139,
+        "guard_ok": false
+      },
+      {
+        "a": "Where must customer data be stored?",
+        "b": "Where must employee data be stored?",
+        "score": 0.7721349596977234,
+        "guard_ok": false
+      },
+      {
+        "a": "How quickly must we report a data breach?",
+        "b": "How quickly must we report a suspicious transaction?",
+        "score": 0.6837314367294312,
+        "guard_ok": false
+      },
+      {
+        "a": "What is the retention period for customer records?",
+        "b": "What is the deletion deadline for customer records?",
+        "score": 0.7590916156768799,
+        "guard_ok": false
+      },
+      {
+        "a": "Who is allowed to approve a high-value transaction?",
+        "b": "Who is allowed to reverse a high-value transaction?",
+        "score": 0.6655187606811523,
+        "guard_ok": false
+      },
+      {
+        "a": "Is MFA required for internal transfers?",
+        "b": "Is MFA required for external transfers?",
+        "score": 0.9342760443687439,
+        "guard_ok": false
+      },
+      {
+        "a": "What are the requirements for onboarding a retail customer?",
+        "b": "What are the requirements for onboarding a corporate customer?",
+        "score": 0.8908350467681885,
+        "guard_ok": false
+      },
+      {
+        "a": "How often must we run an internal audit?",
+        "b": "How often must we run an external audit?",
+        "score": 0.9266542196273804,
+        "guard_ok": false
+      },
+      {
+        "a": "Can customer data be transferred outside the EEA?",
+        "b": "Can customer data be transferred outside the United States?",
+        "score": 0.6965798139572144,
+        "guard_ok": false
+      },
+      {
+        "a": "What is the threshold for reporting a cash transaction?",
+        "b": "What is the threshold for reporting a wire transaction?",
+        "score": 0.7955644130706787,
+        "guard_ok": false
+      },
+      {
+        "a": "What encryption is required for data at rest?",
+        "b": "What encryption is required for data in transit?",
+        "score": 0.7749851942062378,
+        "guard_ok": false
+      },
+      {
+        "a": "What triggers enhanced due diligence?",
+        "b": "What triggers simplified due diligence?",
+        "score": 0.8485273122787476,
+        "guard_ok": false
+      },
+      {
+        "a": "How long is a suspicious activity report retained?",
+        "b": "How long is an internal audit report retained?",
+        "score": 0.710279643535614,
+        "guard_ok": true
+      },
+      {
+        "a": "Must staff complete compliance training every year?",
+        "b": "Must staff complete security training every year?",
+        "score": 0.8394345045089722,
+        "guard_ok": false
+      },
+      {
+        "a": "What are the penalties for late regulatory filing?",
+        "b": "What are the penalties for inaccurate regulatory filing?",
+        "score": 0.8358209133148193,
+        "guard_ok": false
+      },
+      {
+        "a": "Who must approve changes to the risk model?",
+        "b": "Who must approve changes to the pricing model?",
+        "score": 0.6884208917617798,
+        "guard_ok": false
+      },
+      {
+        "a": "Is a written record of the risk assessment required?",
+        "b": "Is a written record of the board decision required?",
+        "score": 0.6419308185577393,
+        "guard_ok": true
+      },
+      {
+        "a": "Can an account be opened before verification completes?",
+        "b": "Can an account be closed before verification completes?",
+        "score": 0.8479148149490356,
+        "guard_ok": false
+      },
+      {
+        "a": "What is the maximum retention period for marketing data?",
+        "b": "What is the minimum retention period for marketing data?",
+        "score": 0.951974630355835,
+        "guard_ok": false
+      },
+      {
+        "a": "Does the policy apply to contractors?",
+        "b": "Does the policy apply to subsidiaries?",
+        "score": 0.6290885210037231,
+        "guard_ok": false
+      },
+      {
+        "a": "When must a customer file be re-reviewed?",
+        "b": "When must a customer file be archived?",
+        "score": 0.6584072709083557,
+        "guard_ok": true
+      },
+      {
+        "a": "What records must be kept for cross-border payments?",
+        "b": "What records must be kept for domestic payments?",
+        "score": 0.7298094034194946,
+        "guard_ok": false
+      },
+      {
+        "a": "How is a politically exposed person identified?",
+        "b": "How is a sanctioned person identified?",
+        "score": 0.6791549921035767,
+        "guard_ok": false
+      }
+    ]
+  },
   "rows": [
     {
       "threshold": 0.5,
       "hit_rate": 0.96,
       "false_hit_rate": 1.0,
-      "margin": -0.040000000000000036
+      "margin": -0.040000000000000036,
+      "guarded_hit_rate": 0.96,
+      "guarded_false_hit_rate": 0.12,
+      "guarded_margin": 0.84
     },
     {
       "threshold": 0.55,
       "hit_rate": 0.96,
       "false_hit_rate": 1.0,
-      "margin": -0.040000000000000036
+      "margin": -0.040000000000000036,
+      "guarded_hit_rate": 0.96,
+      "guarded_false_hit_rate": 0.12,
+      "guarded_margin": 0.84
     },
     {
       "threshold": 0.6,
       "hit_rate": 0.92,
       "false_hit_rate": 1.0,
-      "margin": -0.07999999999999996
+      "margin": -0.07999999999999996,
+      "guarded_hit_rate": 0.92,
+      "guarded_false_hit_rate": 0.12,
+      "guarded_margin": 0.8
     },
     {
       "threshold": 0.65,
       "hit_rate": 0.84,
       "false_hit_rate": 0.92,
-      "margin": -0.08000000000000007
+      "margin": -0.08000000000000007,
+      "guarded_hit_rate": 0.84,
+      "guarded_false_hit_rate": 0.08,
+      "guarded_margin": 0.76
     },
     {
       "threshold": 0.7,
       "hit_rate": 0.84,
       "false_hit_rate": 0.64,
-      "margin": 0.19999999999999996
+      "margin": 0.19999999999999996,
+      "guarded_hit_rate": 0.84,
+      "guarded_false_hit_rate": 0.04,
+      "guarded_margin": 0.7999999999999999
     },
     {
       "threshold": 0.75,
       "hit_rate": 0.72,
       "false_hit_rate": 0.52,
-      "margin": 0.19999999999999996
+      "margin": 0.19999999999999996,
+      "guarded_hit_rate": 0.72,
+      "guarded_false_hit_rate": 0.0,
+      "guarded_margin": 0.72
     },
     {
       "threshold": 0.8,
       "hit_rate": 0.72,
       "false_hit_rate": 0.36,
-      "margin": 0.36
+      "margin": 0.36,
+      "guarded_hit_rate": 0.72,
+      "guarded_false_hit_rate": 0.0,
+      "guarded_margin": 0.72
     },
     {
       "threshold": 0.85,
       "hit_rate": 0.6,
       "false_hit_rate": 0.2,
-      "margin": 0.39999999999999997
+      "margin": 0.39999999999999997,
+      "guarded_hit_rate": 0.6,
+      "guarded_false_hit_rate": 0.0,
+      "guarded_margin": 0.6
     },
     {
       "threshold": 0.9,
       "hit_rate": 0.16,
       "false_hit_rate": 0.16,
-      "margin": 0.0
+      "margin": 0.0,
+      "guarded_hit_rate": 0.16,
+      "guarded_false_hit_rate": 0.0,
+      "guarded_margin": 0.16
     },
     {
       "threshold": 0.95,
       "hit_rate": 0.0,
       "false_hit_rate": 0.08,
-      "margin": -0.08
+      "margin": -0.08,
+      "guarded_hit_rate": 0.0,
+      "guarded_false_hit_rate": 0.0,
+      "guarded_margin": 0.0
     }
   ]
 }

@@ -3,7 +3,15 @@
 from typing import Any
 
 import numpy as np
-from sentence_transformers import SentenceTransformer
+
+try:  # pragma: no cover - exercised by whether the import succeeds, not by a test
+    from sentence_transformers import SentenceTransformer
+except ImportError:
+    # Imported lazily so the package can be imported -- and the test suite run --
+    # without torch present. The test suite substitutes a fake encoder anyway
+    # (tests/conftest.py); requiring a ~2 GB install to monkeypatch it away is
+    # exactly the kind of offline claim a README should not have to make.
+    SentenceTransformer = None
 
 _EPS = 1e-8
 
@@ -11,6 +19,14 @@ _EPS = 1e-8
 class LocalVectorStore:
     def __init__(self, model_name: str = "all-mpnet-base-v2"):
         """Initializes the vector store with a local sentence-transformer encoder."""
+        if SentenceTransformer is None:
+            raise ImportError(
+                "sentence-transformers is not installed. Install it with "
+                "`pip install -e \".[encoder]\"` to use the real encoder, or pass "
+                "any object with encode(text) -> ndarray instead, as "
+                "tests/conftest.py does."
+            )
+        self.model_name = model_name
         self.model = SentenceTransformer(model_name)
         self.documents: list[dict[str, Any]] = []
         self.embeddings: list[np.ndarray] = []

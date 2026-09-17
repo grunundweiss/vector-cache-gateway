@@ -44,3 +44,20 @@ def test_query_on_empty_vector_store_reports_no_match():
 
     assert status == "CACHE_MISS"
     assert answer == "No matching compliance documentation found."
+
+
+def test_skip_cache_neither_reads_nor_writes():
+    """A request marked uncacheable still has to be answered.
+
+    It skips the cache, not the embedding -- the miss path retrieves with that
+    vector, so there is nothing to save by withholding it.
+    """
+    gateway = make_gateway()
+
+    first = gateway.process("How long must KYC records be kept?", skip_cache=True)
+    second = gateway.process("How long must KYC records be kept?", skip_cache=True)
+
+    assert first.status == second.status == "BYPASS"
+    assert first.answer == "KYC records must be retained for 5 years."
+    assert len(gateway.cache) == 0, "a bypassed request must not populate the cache"
+    assert gateway.stats()["metrics"]["bypasses"] == 2
