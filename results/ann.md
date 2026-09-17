@@ -5,11 +5,15 @@ Hardware: Intel Xeon @ 2.10 GHz (4 cores), 15 GB RAM, container.
 asks for on every lookup.
 Reproduce with `python -m benchmarks.bench_ann`.
 
-**This is a different machine from [`benchmarks.md`](benchmarks.md)**, which was
-measured on an AMD Ryzen 7 5800X3D. The exact-scan column here is roughly an
-order of magnitude faster than the one there at the same size, which is worth
-noticing before treating either as *the* number: BLAS, core count and memory
-bandwidth move this benchmark more than the algorithm does.
+**This is a different machine from [`benchmarks.md`](benchmarks.md)**, and the
+two disagree in both directions. Exact scan at 10k: 0.342 ms here, 0.156 ms
+there. At 100k: 4.10 ms here, 13.95 ms there. The same operation, the same code,
+one machine twice as slow at the small size and three times faster at the large
+one — because 293 MB of vectors fits differently in two cache hierarchies.
+
+Treat that as the headline finding of both files. BLAS, core count and memory
+bandwidth move these numbers more than any choice in `gateway/index.py` does,
+and a scaling table from someone else's machine is not evidence about yours.
 
 ## Clustered vectors — the case a cache actually sees
 

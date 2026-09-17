@@ -41,9 +41,9 @@
     }
   ],
   "timing": {
-    "p50_us": 14.563003787770867,
-    "p95_us": 17.251993995159864,
-    "mean_us": 14.759984491684008,
+    "p50_us": 5.812999916088302,
+    "p95_us": 10.486000064702239,
+    "mean_us": 6.915617801769258,
     "checks": 10000
   },
   "near_misses": [
@@ -75,7 +75,7 @@
       "a": "How quickly must we report a data breach?",
       "b": "How quickly must we report a suspicious transaction?",
       "vetoed": true,
-      "reason": "polarity: mutually exclusive terms: ['breach'] vs ['suspiciou transaction']"
+      "reason": "polarity: mutually exclusive terms: ['breach'] vs ['suspicious transaction']"
     },
     {
       "a": "What is the retention period for customer records?",

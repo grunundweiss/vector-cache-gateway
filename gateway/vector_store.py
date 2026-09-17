@@ -4,14 +4,31 @@ from typing import Any
 
 import numpy as np
 
-try:  # pragma: no cover - exercised by whether the import succeeds, not by a test
-    from sentence_transformers import SentenceTransformer
-except ImportError:
-    # Imported lazily so the package can be imported -- and the test suite run --
-    # without torch present. The test suite substitutes a fake encoder anyway
-    # (tests/conftest.py); requiring a ~2 GB install to monkeypatch it away is
-    # exactly the kind of offline claim a README should not have to make.
-    SentenceTransformer = None
+
+def _import_sentence_transformer() -> Any:
+    """Returns the SentenceTransformer class, or None if it is not installed.
+
+    Optional so the package can be imported -- and the test suite run -- without
+    torch present. The suite substitutes a fake encoder anyway
+    (tests/conftest.py); requiring a ~2 GB install to monkeypatch it away is
+    exactly the kind of offline claim a README should not have to make.
+
+    The import is wrapped in a function rather than assigning ``None`` to the
+    imported name at module level, because that assignment type-checks
+    differently depending on whether the optional dependency happens to be
+    installed -- clean in CI, two errors on a machine with the encoder extra.
+    A checker that only passes on some developers' machines is worse than no
+    checker.
+    """
+    try:
+        from sentence_transformers import SentenceTransformer as cls
+    except ImportError:
+        return None
+    return cls
+
+
+# Deliberately `Any` and module-level: tests monkeypatch this name.
+SentenceTransformer: Any = _import_sentence_transformer()
 
 _EPS = 1e-8
 

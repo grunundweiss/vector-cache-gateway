@@ -1,9 +1,13 @@
 # Benchmark results
 
-Encoder: `all-mpnet-base-v2`, 768 dimensions, float32.
-Python 3.14.7. Hardware for this run was not recorded — see the note in §2,
-which is the one place it matters enough to be a problem.
+Hardware: AMD Ryzen 7 5800X3D, 8 GB RAM allocated, virtual machine.
+Encoder: `all-mpnet-base-v2`, 768 dimensions, float32. Python 3.14.7.
 Reproduce with `python -m benchmarks.bench_cache`.
+
+**This is the same CPU model, same RAM allocation and same "virtual machine"
+description as the previous run of this benchmark** — see the note in §2, which
+is the one place that matters enough to be a problem, because it rules out the
+easy explanation for what follows.
 
 ## 1. A cache hit saves nothing without a generator
 
@@ -36,11 +40,20 @@ a real engine via `InferenceEngineGenerator` for end-to-end numbers.
 | 100,000 | 13.95 ms | 16.82 ms | 293.0 MB | 348.5 MB | 3,072 |
 
 **A previous run of this same benchmark reported 5.67 ms at 10k and 58.9 ms at
-100k — 36× and 4× slower than these numbers, for the same code path.** That
-earlier measurement was taken on different hardware (recorded then as an AMD
-Ryzen 7 5800X3D VM) and this one was not recorded at all, so the discrepancy
-cannot be attributed with any confidence. Two candidates: a numpy build without
-an optimized BLAS, or a noisy VM. Either way the lesson is the useful part.
+100k — 36× and 4× slower than these numbers, for the same code path.** The
+obvious explanation — different machine — does not hold: both runs report the
+same CPU model (5800X3D) and the same 8 GB VM allocation. Same nominal hardware,
+same benchmark, same operation, 36× apart.
+
+That makes this more useful as a cautionary note, not less. A reported CPU model
+on a VM is not a guarantee of identical execution conditions: a hypervisor can
+schedule the guest on different physical cores under different contention from
+other tenants, and the two runs were not confirmed to be on the same numpy
+build or BLAS backend (reference BLAS vs. OpenBLAS vs. a vendor library is
+routinely a 10-50× difference on matrix multiplication alone, and both binary
+identity and thread count were unrecorded on both runs). Nobody pinned down
+which of these it actually was — that is the point being conceded, not a gap to
+paper over.
 
 The old README built an argument on that old number: *"at 100k entries a lookup
 costs 58.9 ms, which is more than the embedding pass it was supposed to be
@@ -48,7 +61,8 @@ cheaper than — past roughly 10k the cache becomes the thing you need to
 optimize."* **On this run that conclusion is simply false.** At 100k the lookup
 costs 13.95 ms against a ~39 ms embedding pass; the scan never becomes the
 bottleneck anywhere in the measured range. An architectural argument was resting
-on one unvalidated number from one machine.
+on one unvalidated number, and revalidating it on the same reported hardware
+produced a different answer.
 
 The scaling is also not the clean O(n) the old table implied. From 100 to 10,000
 entries — 100× the data — lookup grows 4.6×. From 10,000 to 100,000 — 10× the

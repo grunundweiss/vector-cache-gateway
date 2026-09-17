@@ -113,8 +113,15 @@ class CacheGuard(Protocol):
 
 
 def _singular(token: str) -> str:
-    """Strips a trailing plural/third-person ``s`` so surface forms line up."""
-    if len(token) > 3:
+    """Strips a trailing plural/third-person ``s`` so surface forms line up.
+
+    Naive on purpose -- it only has to make the same word normalize the same way
+    on both sides of a comparison, not be right about English. The ``us``
+    exception is the one case where being wrong is visible: without it
+    "suspicious" becomes "suspiciou" and shows up that way in the veto reason a
+    human reads when debugging a low hit rate.
+    """
+    if len(token) > 3 and not token.endswith("us"):
         if token.endswith("ies"):
             return token[:-3] + "y"
         if token.endswith("sses") or token.endswith("shes") or token.endswith("ches"):
